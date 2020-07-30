@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Segment, Header, Form, Divider } from 'semantic-ui-react';
+import { labelImage } from '../services/googleVision';
 
 import {
   db,
@@ -138,7 +139,7 @@ const AlbumDetails = (props) => {
       <PhotosList photos={photos} albumName={album.name} />
       {hasMorePhotos && (
         <Form.Button
-          //   onClick={() => fetchNextPhotos()}
+          onClick={() => labelImage()}
           icon="refresh"
           disabled={fetchingPhotos}
           content={fetchingPhotos ? 'Loading...' : 'Load more photos'}

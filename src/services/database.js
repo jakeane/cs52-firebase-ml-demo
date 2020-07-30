@@ -1,6 +1,6 @@
 import * as firebase from 'firebase';
 
-var firebaseConfig = {
+const firebaseConfig = {
   apiKey: 'AIzaSyC-wavH3KirRxFkKimJkZIAmJJgeq0qHj8',
   authDomain: 'cs52-firebase-ml-demo.firebaseapp.com',
   databaseURL: 'https://cs52-firebase-ml-demo.firebaseio.com',
