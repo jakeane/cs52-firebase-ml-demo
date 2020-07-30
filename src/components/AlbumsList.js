@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Segment, Header, List } from 'semantic-ui-react';
 import { NavLink } from 'react-router-dom';
-import { getAlbums } from '../services/database';
+import { getAlbums, db } from '../services/database';
 
 // function makeComparator(key, order = 'asc') {
 //   return (a, b) => {
@@ -28,27 +28,14 @@ const AlbumsList = () => {
   const [albums, setAlbums] = useState([]);
 
   useEffect(() => {
-    async function fetchData() {
-      const result = await getAlbums();
-      console.log('Results:', result);
-      setAlbums(result); //.data.listAlbums.items);
-    }
-    fetchData();
-  }, []);
+    const subscription = db.collection('albums').onSnapshot((snapshot) => {
+      setAlbums(snapshot.docs.map((doc) => doc.data()));
+    });
 
-  useEffect(() => {
-    let subscription;
-    async function setupSubscription() {
-      const user = 'user'; // firebase.auth().user
-      subscription = 'subscription'; // subscribe to album changes
-    }
-    setupSubscription();
-
-    return () => subscription.unsubscribe();
+    return () => subscription();
   }, []);
 
   const albumItems = () => {
-    console.log(albums);
     return albums.map((album) => (
       <List.Item key={album.name}>
         <NavLink to={`/albums/${album.name}`}>{album.name}</NavLink>

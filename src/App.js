@@ -15,7 +15,7 @@ function App() {
           <Route path="/" exact component={NewAlbum} />
           <Route path="/" exact component={AlbumsList} />
           {/* <Route path="/" exact component={Search} /> */}
-          {/* <Route
+          <Route
             path="/albums/:albumId"
             render={() => (
               <div>
@@ -26,7 +26,7 @@ function App() {
           <Route
             path="/albums/:albumId"
             render={(props) => <AlbumDetails id={props.match.params.albumId} />}
-          /> */}
+          />
         </Grid.Column>
       </Grid>
     </Router>

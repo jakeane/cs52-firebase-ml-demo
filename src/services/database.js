@@ -11,7 +11,8 @@ var firebaseConfig = {
 };
 firebase.initializeApp(firebaseConfig);
 
-const db = firebase.firestore();
+export const db = firebase.firestore();
+const storage = firebase.storage();
 
 // create new album
 export const createAlbum = (albumName) => {
@@ -22,6 +23,39 @@ export const createAlbum = (albumName) => {
 
 // get all albums
 export const getAlbums = async () => {
-  const snapshot = await db.collection('albums').get();
+  //   const snapshot = await db.collection('albums').get();
+  //   return snapshot.docs.map((doc) => doc.data());
+  return db.collection('albums').onSnapshot((snapshot) => {
+    return snapshot.docs.map((doc) => doc.data());
+  });
+};
+
+// upload photo to storage
+export const storePhoto = async (albumName, file) => {
+  storage
+    .ref(`photos/${albumName}/${file.name}`)
+    .put(file)
+    .then((result) => {
+      return result.ref.getDownloadURL();
+    })
+    .then((url) => {
+      db.collection('albums')
+        .doc(albumName)
+        .collection('photos')
+        .doc(file.name)
+        .set({ name: file.name, download: url });
+    });
+};
+
+export const getAlbumPhotos = async (albumName) => {
+  const snapshot = await db
+    .collection('albums')
+    .doc(albumName)
+    .collection('photos')
+    .get();
   return snapshot.docs.map((doc) => doc.data());
+};
+
+export const getPhotoURL = (albumName, fileName) => {
+  return storage.ref(`photos/${albumName}/${fileName}`).getDownloadURL();
 };
