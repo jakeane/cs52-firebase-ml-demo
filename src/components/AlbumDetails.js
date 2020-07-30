@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { Segment, Header, Form, Divider } from 'semantic-ui-react';
-import { labelImage } from '../services/googleVision';
 
 import {
   db,
   storePhoto,
   getAlbumPhotos,
-  getPhotoURL,
+  searchPhotosByLabel,
 } from '../services/database';
 
 const ImageUpload = (props) => {
@@ -99,37 +98,6 @@ const AlbumDetails = (props) => {
     return () => subscription();
   }, [props.id]);
 
-  //   const fetchNextPhotos = async () => {
-  //     const FETCH_LIMIT = 20;
-  //     setFetchingPhotos(true);
-  //     const queryArgs = 'query'; // set up queryArgs
-  //     const results = 'result'; // listPhotosByAlbum with queryArgs
-  //     setPhotos((p) => p.concat(results.data.listPhotosByAlbum.items));
-  //     setNextPhotosToken(results.data.listPhotosByAlbum.nextToken);
-  //     setHasMorePhotos(
-  //       // eslint-disable-next-line comma-dangle
-  //       results.data.listPhotosByAlbum.items.length === FETCH_LIMIT
-  //     );
-  //     setFetchingPhotos(false);
-  //   };
-
-  //   useEffect(() => {
-  //     fetchNextPhotos();
-  //   }, []);
-
-  //   useEffect(() => {
-  //     let subscription;
-  //     console.log('hey from useeffect');
-  //     async function setupSubscription() {
-  //       const user = 'user'; // firebase.auth().user or something
-  //       subscription = 'subscription'; // subscribe to album updates
-  //     }
-  //     setupSubscription();
-
-  //     return () => {
-  //       subscription.unsubscribe();
-  //     };
-  //   }, [props.id]);
   console.log('Photos:', photos);
 
   return (
@@ -139,7 +107,7 @@ const AlbumDetails = (props) => {
       <PhotosList photos={photos} albumName={album.name} />
       {hasMorePhotos && (
         <Form.Button
-          onClick={() => labelImage()}
+          onClick={() => searchPhotosByLabel()}
           icon="refresh"
           disabled={fetchingPhotos}
           content={fetchingPhotos ? 'Loading...' : 'Load more photos'}

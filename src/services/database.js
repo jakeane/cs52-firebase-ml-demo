@@ -1,4 +1,5 @@
 import * as firebase from 'firebase';
+import axios from 'axios';
 
 const firebaseConfig = {
   apiKey: 'AIzaSyC-wavH3KirRxFkKimJkZIAmJJgeq0qHj8',
@@ -38,12 +39,23 @@ export const storePhoto = async (albumName, file) => {
     .then((result) => {
       return result.ref.getDownloadURL();
     })
-    .then((url) => {
+    .then(async (url) => {
+      const body = {
+        uri: `gs://cs52-firebase-ml-demo.appspot.com/photos/${albumName}/${file.name}`,
+      };
+      const labels = await axios.post(
+        'http://cs52-ml-demo.herokuapp.com/api',
+        body
+      );
+      return [url, labels.data.map((label) => label.toLowerCase())];
+    })
+    .then((data) => {
+      console.log(data[1]);
       db.collection('albums')
         .doc(albumName)
         .collection('photos')
         .doc(file.name)
-        .set({ name: file.name, download: url });
+        .set({ name: file.name, download: data[0], labels: data[1] });
     });
 };
 
@@ -58,4 +70,21 @@ export const getAlbumPhotos = async (albumName) => {
 
 export const getPhotoURL = (albumName, fileName) => {
   return storage.ref(`photos/${albumName}/${fileName}`).getDownloadURL();
+};
+
+export const searchPhotosByLabel = async (label) => {
+  let labeledPhotos = [];
+  const albums = await db.collection('albums').get();
+  albums.docs.forEach(async (doc) => {
+    const photos = await db
+      .collection('albums')
+      .doc(doc.id)
+      .collection('photos')
+      .where('labels', 'array-contains', 'cat')
+      .get();
+    photos.docs.forEach((doc) => {
+      labeledPhotos.push(doc.data());
+    });
+  });
+  console.log(labeledPhotos);
 };
