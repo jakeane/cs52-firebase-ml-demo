@@ -1,25 +1,35 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { Grid } from 'semantic-ui-react';
+import { BrowserRouter as Router, Route, NavLink } from 'react-router-dom';
+
+import NewAlbum from './components/NewAlbum';
+import AlbumsList from './components/AlbumsList';
+import AlbumDetails from './components/AlbumDetails';
+import Search from './components/Search';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router>
+      <Grid padded>
+        <Grid.Column>
+          <Route path="/" exact component={NewAlbum} />
+          <Route path="/" exact component={AlbumsList} />
+          {/* <Route path="/" exact component={Search} /> */}
+          {/* <Route
+            path="/albums/:albumId"
+            render={() => (
+              <div>
+                <NavLink to="/">Back to Albums List</NavLink>
+              </div>
+            )}
+          />
+          <Route
+            path="/albums/:albumId"
+            render={(props) => <AlbumDetails id={props.match.params.albumId} />}
+          /> */}
+        </Grid.Column>
+      </Grid>
+    </Router>
   );
 }
 
