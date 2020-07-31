@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Header, Segment, Input } from 'semantic-ui-react';
 import { PhotosList } from './AlbumDetails';
+import { searchPhotosByLabel } from '../services/database';
 
 const Search = () => {
   const [photos, setPhotos] = useState([]);
@@ -8,12 +9,13 @@ const Search = () => {
   const [hasResults, setHasResults] = useState(false);
   const [searched, setSearched] = useState(false);
 
-  const getPhotosForLabel = async (e) => {
+  const getPhotosForLabel = async () => {
     setPhotos([]);
-    const result = 'result'; // search photos by label
-    if (result.data.searchPhotos.items.length !== 0) {
-      setHasResults(result.data.searchPhotos.items.length > 0);
-      setPhotos((p) => p.concat(result.data.searchPhotos.items));
+    const labels = label.split(',').map((str) => str.trim());
+    const result = await searchPhotosByLabel(labels);
+    if (result.length !== 0) {
+      setHasResults(result.length > 0);
+      setPhotos((p) => p.concat(result));
     }
     setSearched(true);
   };

@@ -14,7 +14,7 @@ function App() {
         <Grid.Column>
           <Route path="/" exact component={NewAlbum} />
           <Route path="/" exact component={AlbumsList} />
-          {/* <Route path="/" exact component={Search} /> */}
+          <Route path="/" exact component={Search} />
           <Route
             path="/albums/:albumId"
             render={() => (

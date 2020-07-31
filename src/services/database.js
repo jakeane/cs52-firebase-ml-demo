@@ -72,19 +72,25 @@ export const getPhotoURL = (albumName, fileName) => {
   return storage.ref(`photos/${albumName}/${fileName}`).getDownloadURL();
 };
 
-export const searchPhotosByLabel = async (label) => {
+export const searchPhotosByLabel = async (labels) => {
   let labeledPhotos = [];
   const albums = await db.collection('albums').get();
-  albums.docs.forEach(async (doc) => {
-    const photos = await db
-      .collection('albums')
-      .doc(doc.id)
-      .collection('photos')
-      .where('labels', 'array-contains', 'cat')
-      .get();
-    photos.docs.forEach((doc) => {
-      labeledPhotos.push(doc.data());
-    });
+  albums.docs.forEach((doc) => {
+    labeledPhotos.push(
+      db
+        .collection('albums')
+        .doc(doc.id)
+        .collection('photos')
+        .where('labels', 'array-contains-any', labels)
+        .get()
+        .then((snapshot) => {
+          return snapshot.docs.map((doc) => doc.data());
+        })
+    );
   });
-  console.log(labeledPhotos);
+
+  const resultPhotos = await Promise.all(labeledPhotos).then((res) => {
+    return [].concat.apply([], res);
+  });
+  return resultPhotos;
 };
