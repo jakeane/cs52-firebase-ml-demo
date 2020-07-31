@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { Segment, Header, Form, Divider } from 'semantic-ui-react';
+import { Segment, Header, Form } from 'semantic-ui-react';
 
 import { db, storePhoto, getAlbumPhotos } from '../services/database';
+
+// HANDLE THE Each child in a list should have a unique "key" prop. ERROR
 
 const ImageUpload = (props) => {
   const [uploading, setUploading] = useState(false);
@@ -46,14 +48,20 @@ const ImageUpload = (props) => {
 
 export const PhotosList = React.memo((props) => {
   const PhotoItems = (prps) => {
-    return prps.photos.map((photo) => (
-      <img src={photo.download} alt={photo.name} className="album-photo" />
+    return prps.photos.map((photo, index) => (
+      <div className="images">
+        <img
+          src={photo.download}
+          alt={photo.name}
+          className="album-photo"
+          key={index}
+        />
+      </div>
     ));
   };
 
   return (
-    <div>
-      <Divider hidden />
+    <div className="image-container">
       <PhotoItems photos={props.photos} />
     </div>
   );

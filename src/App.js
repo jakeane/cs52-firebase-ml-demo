@@ -1,5 +1,5 @@
 import React from 'react';
-import { Grid } from 'semantic-ui-react';
+import { Grid, Segment } from 'semantic-ui-react';
 import { BrowserRouter as Router, Route, NavLink } from 'react-router-dom';
 
 import NewAlbum from './components/NewAlbum';
@@ -18,9 +18,9 @@ function App() {
           <Route
             path="/albums/:albumId"
             render={() => (
-              <div>
+              <Segment>
                 <NavLink to="/">Back to Albums List</NavLink>
-              </div>
+              </Segment>
             )}
           />
           <Route
