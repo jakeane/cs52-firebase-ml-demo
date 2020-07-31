@@ -28,9 +28,12 @@ const AlbumsList = () => {
   const [albums, setAlbums] = useState([]);
 
   useEffect(() => {
-    const subscription = db.collection('albums').onSnapshot((snapshot) => {
-      setAlbums(snapshot.docs.map((doc) => doc.data()));
-    });
+    const subscription = db
+      .collection('albums')
+      .orderBy('created', 'desc')
+      .onSnapshot((snapshot) => {
+        setAlbums(snapshot.docs.map((doc) => doc.data()));
+      });
 
     return () => subscription();
   }, []);

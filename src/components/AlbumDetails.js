@@ -91,6 +91,7 @@ const AlbumDetails = (props) => {
       .collection('albums')
       .doc(props.id)
       .collection('photos')
+      .orderBy('created', 'desc')
       .onSnapshot((snapshot) => {
         setPhotos(snapshot.docs.map((doc) => doc.data()));
       });
@@ -98,21 +99,11 @@ const AlbumDetails = (props) => {
     return () => subscription();
   }, [props.id]);
 
-  console.log('Photos:', photos);
-
   return (
     <Segment>
       <Header as="h3">{album.name}</Header>
       <ImageUpload albumName={album.name} />
       <PhotosList photos={photos} albumName={album.name} />
-      {hasMorePhotos && (
-        <Form.Button
-          onClick={() => searchPhotosByLabel()}
-          icon="refresh"
-          disabled={fetchingPhotos}
-          content={fetchingPhotos ? 'Loading...' : 'Load more photos'}
-        />
-      )}
     </Segment>
   );
 };

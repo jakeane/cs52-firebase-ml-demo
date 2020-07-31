@@ -11,7 +11,7 @@ const Search = () => {
 
   const getPhotosForLabel = async () => {
     setPhotos([]);
-    const labels = label.split(',').map((str) => str.trim());
+    const labels = label.split(',').map((str) => str.trim().toLowerCase());
     const result = await searchPhotosByLabel(labels);
     if (result.length !== 0) {
       setHasResults(result.length > 0);

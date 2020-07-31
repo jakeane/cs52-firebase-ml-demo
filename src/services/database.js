@@ -19,6 +19,7 @@ const storage = firebase.storage();
 export const createAlbum = (albumName) => {
   db.collection('albums').doc(albumName).set({
     name: albumName,
+    created: firebase.firestore.FieldValue.serverTimestamp(),
   });
 };
 
@@ -55,7 +56,12 @@ export const storePhoto = async (albumName, file) => {
         .doc(albumName)
         .collection('photos')
         .doc(file.name)
-        .set({ name: file.name, download: data[0], labels: data[1] });
+        .set({
+          name: file.name,
+          download: data[0],
+          labels: data[1],
+          created: firebase.firestore.FieldValue.serverTimestamp(),
+        });
     });
 };
 
