@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Segment, Header, List } from 'semantic-ui-react';
 import { NavLink } from 'react-router-dom';
-import { getAlbums, db } from '../services/database';
+import { db } from '../services/database';
 
 // function makeComparator(key, order = 'asc') {
 //   return (a, b) => {

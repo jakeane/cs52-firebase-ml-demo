@@ -1,12 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Segment, Header, Form, Divider } from 'semantic-ui-react';
 
-import {
-  db,
-  storePhoto,
-  getAlbumPhotos,
-  searchPhotosByLabel,
-} from '../services/database';
+import { db, storePhoto, getAlbumPhotos } from '../services/database';
 
 const ImageUpload = (props) => {
   const [uploading, setUploading] = useState(false);
@@ -67,20 +62,15 @@ export const PhotosList = React.memo((props) => {
 const AlbumDetails = (props) => {
   const [album, setAlbum] = useState({ name: 'Loading...', photos: [] });
   const [photos, setPhotos] = useState([]);
-  const [hasMorePhotos, setHasMorePhotos] = useState(true);
-  const [fetchingPhotos, setFetchingPhotos] = useState(false);
-  const [nextPhotosToken, setNextPhotosToken] = useState(null);
 
   useEffect(() => {
     const loadAlbumInfo = async () => {
-      setFetchingPhotos(true);
       const photos = await getAlbumPhotos(props.id);
       setAlbum({
         name: props.id,
         photos: photos,
       });
       setPhotos(photos);
-      setFetchingPhotos(false);
     };
 
     loadAlbumInfo();
