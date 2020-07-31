@@ -2,15 +2,6 @@ import * as firebase from 'firebase';
 import axios from 'axios';
 const firebaseConfig = require('./firebaseConfig.json');
 
-// const firebaseConfig = {
-//   apiKey: 'AIzaSyC-wavH3KirRxFkKimJkZIAmJJgeq0qHj8',
-//   authDomain: 'cs52-firebase-ml-demo.firebaseapp.com',
-//   databaseURL: 'https://cs52-firebase-ml-demo.firebaseio.com',
-//   projectId: 'cs52-firebase-ml-demo',
-//   storageBucket: 'cs52-firebase-ml-demo.appspot.com',
-//   messagingSenderId: '677674140888',
-//   appId: '1:677674140888:web:cf4023d8620b6c8b6303ad',
-// };
 firebase.initializeApp(firebaseConfig);
 
 export const db = firebase.firestore();
